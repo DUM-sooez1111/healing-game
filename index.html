@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>햇살마을 농장</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-label="2D 탑다운 도트 힐링 농장">
+      <section class="topbar" aria-label="게임 상태">
+        <div>
+          <p class="eyebrow">Pixel Healing Farm</p>
+          <h1>햇살마을 농장</h1>
+        </div>
+        <div class="status-grid">
+          <div class="status"><span>날짜</span><strong id="dateLabel">봄 1일</strong></div>
+          <div class="status"><span>시간</span><strong id="timeLabel">아침</strong></div>
+          <div class="status"><span>골드</span><strong id="goldLabel">120G</strong></div>
+          <div class="status"><span>씨앗</span><strong id="seedLabel">4</strong></div>
+          <div class="status"><span>작물</span><strong id="cropLabel">0</strong></div>
+          <div class="status"><span>호감</span><strong id="heartLabel">0</strong></div>
+        </div>
+      </section>
+
+      <section class="map-wrap" aria-label="마을 지도">
+        <div class="map spring morning" id="villageMap">
+          <div class="sun-moon" id="skyOrb"></div>
+          <div class="region forest forest-north"></div>
+          <div class="region forest forest-west"></div>
+          <div class="region meadow"></div>
+          <div class="water lake" data-zone="lake"><span>낚시터</span></div>
+          <div class="path path-main"></div>
+          <div class="path path-cross"></div>
+          <div class="path path-home"></div>
+
+
+          <button class="place home" data-place="home" aria-label="집">
+            <span class="roof"></span><span class="wall"></span><span class="door"></span>
+          </button>
+          <button class="place shop" data-place="shop" aria-label="씨앗 상점">
+            <span class="awning"></span><span class="shop-body"></span><span class="shop-sign">SEED</span>
+          </button>
+          <button class="place tool-shop" data-place="toolShop" aria-label="도구 상점">
+            <span class="tool-roof"></span><span class="tool-body"></span><span class="tool-sign">TOOL</span>
+          </button>
+          <button class="place plaza" data-place="plaza" aria-label="마을 광장">
+            <span class="well"></span>
+          </button>
+          <button class="place npc" data-place="npc" aria-label="주민 소라">
+            <span class="npc-sprite"></span>
+            <span class="speech-dot"></span>
+          </button>
+
+          <div class="farm-board" id="farmBoard" aria-label="농장 밭"></div>
+          <button class="collectable herb herb-a" data-forage="herb" aria-label="허브 채집"></button>
+          <button class="collectable berry berry-a" data-forage="berry" aria-label="열매 채집"></button>
+          <button class="collectable mushroom mushroom-a" data-forage="mushroom" aria-label="버섯 채집"></button>
+          <button class="insect butterfly insect-a" data-insect="butterfly" aria-label="나비 잡기"></button>
+          <button class="insect beetle insect-b" data-insect="beetle" aria-label="딱정벌레 잡기"></button>
+          <button class="insect firefly insect-c" data-insect="firefly" aria-label="반딧불이 잡기"></button>
+
+          <div class="deco pond-rock"></div>
+          <div class="deco flower-patch patch-a"></div>
+          <div class="deco flower-patch patch-b"></div>
+          <div class="deco tree tree-a"></div>
+          <div class="deco tree tree-b"></div>
+          <div class="deco tree tree-c"></div>
+          <div class="deco tree tree-d"></div>
+          <div class="deco tree tree-e"></div>
+
+          <div class="player" id="player" aria-label="플레이어"></div>
+        </div>
+      </section>
+
+      <aside class="panel" aria-live="polite">
+        <section class="info-block">
+          <p class="eyebrow">현재 상황</p>
+          <h2 id="placeName">농장 입구</h2>
+          <p id="placeText">WASD로 이동하고, 밭 타일을 누른 뒤 아래 행동을 선택해 농사를 시작하세요.</p>
+        </section>
+
+        <section class="toolbox" aria-label="농사 도구">
+          <button data-action="till">밭 갈기</button>
+          <button data-action="tillAll">전체 갈기</button>
+          <button data-action="plant">씨앗 심기</button>
+          <button data-action="plantAll">전체 씨앗 뿌리기</button>
+          <button data-action="water">물주기</button>
+          <button data-action="waterAll">전체 물주기</button>
+          <button data-action="harvest">수확</button>
+          <button data-action="harvestAll">전체 수확</button>
+        </section>
+
+        <section class="toolbox" aria-label="생활 행동">
+          <button id="buySeedBtn">씨앗 구매</button>
+          <button id="buyToolBtn">도구 구매</button>
+          <button id="buyPlantAllBtn">전체 파종기 구매 · 140G</button>
+          <button id="buyWaterAllBtn">전체 물주기 구매 · 160G</button>
+          <button id="buyHarvestAllBtn">전체 수확함 구매 · 180G</button>
+          <button id="sellCropBtn">작물 판매</button>
+          <button id="sellFishBtn">물고기 판매</button>
+          <button id="sellBugBtn">곤충 판매</button>
+          <button id="fishBtn">낚시</button>
+          <button id="cookBtn">요리</button>
+          <button id="talkBtn">대화</button>
+          <button id="nextDayBtn">잠자기</button>
+        </section>
+
+        <section class="toolbox save-tools" aria-label="저장">
+          <button id="saveBtn">저장</button>
+          <button id="loadBtn">불러오기</button>
+          <button id="tutorialBtn">튜토리얼</button>
+        </section>
+
+        <section class="inventory">
+          <p class="eyebrow">가방</p>
+          <div id="inventoryList"></div>
+        </section>
+
+        <section class="insect-book">
+          <p class="eyebrow">곤충 도감</p>
+          <p id="insectBookText">발견한 곤충 0 / 3</p>
+          <div id="insectBook" aria-label="곤충 도감 목록"></div>
+        </section>
+
+        <section class="quest">
+          <p class="eyebrow">퀘스트</p>
+          <h3 id="questTitle">첫 수확의 날</h3>
+          <p id="questText">작물 2개 수확하기</p>
+          <div class="quest-bar"><span id="questProgress"></span></div>
+        </section>
+      </aside>
+    </main>
+
+    <section class="mini-game hidden" id="miniGame" aria-live="polite">
+      <div class="mini-panel">
+        <p class="eyebrow">Mini Game</p>
+        <h2 id="miniTitle">미니게임</h2>
+        <p id="miniText">초록 구간에 맞춰 멈추세요.</p>
+        <div class="mini-scene fish-scene" id="fishMiniScene" aria-label="낚시 미니게임 장면">
+          <span class="pixel-sky"></span>
+          <span class="pixel-water"></span>
+          <span class="pixel-rod"></span>
+          <span class="pixel-line"></span>
+          <span class="pixel-bobber"></span>
+          <span class="pixel-fish"></span>
+          <span class="pixel-ripple ripple-a"></span>
+          <span class="pixel-ripple ripple-b"></span>
+        </div>
+        <div class="timing-track">
+          <span class="success-zone" id="successZone"></span>
+          <span class="timing-cursor" id="timingCursor"></span>
+        </div>
+        <div class="mini-actions">
+          <button id="stopMiniBtn">멈추기</button>
+          <button id="cancelMiniBtn">그만두기</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="tutorial hidden" id="tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+      <div class="tutorial-panel">
+        <p class="eyebrow" id="tutorialStep">튜토리얼 1 / 4</p>
+        <h2 id="tutorialTitle">마을을 둘러보세요</h2>
+        <p id="tutorialText"></p>
+        <div class="tutorial-progress"><span id="tutorialProgress"></span></div>
+        <div class="mini-actions">
+          <button id="tutorialSkipBtn">건너뛰기</button>
+          <button id="tutorialNextBtn">다음</button>
+        </div>
+      </div>
+    </section>
+
+    <script src="game.js"></script>
+  </body>
+</html>
