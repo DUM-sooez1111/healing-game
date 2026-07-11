@@ -80,37 +80,75 @@
           <p id="placeText">WASD로 이동하고, 밭 타일을 누른 뒤 아래 행동을 선택해 농사를 시작하세요.</p>
         </section>
 
-        <section class="toolbox" aria-label="농사 도구">
-          <button data-action="till">밭 갈기</button>
-          <button data-action="tillAll">전체 갈기</button>
-          <button data-action="plant">씨앗 심기</button>
-          <button data-action="plantAll">전체 씨앗 뿌리기</button>
-          <button data-action="water">물주기</button>
-          <button data-action="waterAll">전체 물주기</button>
-          <button data-action="harvest">수확</button>
-          <button data-action="harvestAll">전체 수확</button>
-        </section>
+        <div class="action-menu" aria-label="행동 메뉴">
+          <section class="action-category category-farm" aria-labelledby="farmActionsTitle">
+            <div class="category-heading">
+              <h3 id="farmActionsTitle">농사</h3>
+              <span>밭을 가꾸고 수확해요</span>
+            </div>
+            <div class="toolbox">
+              <button data-action="till">밭 갈기</button>
+              <button data-action="tillAll">전체 갈기</button>
+              <button data-action="plant">씨앗 심기</button>
+              <button data-action="plantAll">전체 씨앗 뿌리기</button>
+              <button data-action="water">물주기</button>
+              <button data-action="waterAll">전체 물주기</button>
+              <button data-action="harvest">수확</button>
+              <button data-action="harvestAll">전체 수확</button>
+            </div>
+          </section>
 
-        <section class="toolbox" aria-label="생활 행동">
-          <button id="buySeedBtn">씨앗 구매</button>
-          <button id="buyToolBtn">도구 구매</button>
-          <button id="buyPlantAllBtn">전체 파종기 구매 · 140G</button>
-          <button id="buyWaterAllBtn">전체 물주기 구매 · 160G</button>
-          <button id="buyHarvestAllBtn">전체 수확함 구매 · 180G</button>
-          <button id="sellCropBtn">작물 판매</button>
-          <button id="sellFishBtn">물고기 판매</button>
-          <button id="sellBugBtn">곤충 판매</button>
-          <button id="fishBtn">낚시</button>
-          <button id="cookBtn">요리</button>
-          <button id="talkBtn">대화</button>
-          <button id="nextDayBtn">잠자기</button>
-        </section>
+          <section class="action-category category-shop" aria-labelledby="shopActionsTitle">
+            <div class="category-heading">
+              <h3 id="shopActionsTitle">상점</h3>
+              <span>씨앗과 편의 도구를 구매해요</span>
+            </div>
+            <div class="toolbox">
+              <button id="buySeedBtn">씨앗 구매</button>
+              <button id="buyToolBtn">도구 구매</button>
+              <button id="buyPlantAllBtn">전체 파종기 · 140G</button>
+              <button id="buyWaterAllBtn">전체 물주기 · 160G</button>
+              <button id="buyHarvestAllBtn">전체 수확함 · 180G</button>
+            </div>
+          </section>
 
-        <section class="toolbox save-tools" aria-label="저장">
-          <button id="saveBtn">저장</button>
-          <button id="loadBtn">불러오기</button>
-          <button id="tutorialBtn">튜토리얼</button>
-        </section>
+          <section class="action-category category-trade" aria-labelledby="tradeActionsTitle">
+            <div class="category-heading">
+              <h3 id="tradeActionsTitle">판매</h3>
+              <span>모은 물건을 골드로 바꿔요</span>
+            </div>
+            <div class="toolbox">
+              <button id="sellCropBtn">작물 판매</button>
+              <button id="sellFishBtn">물고기 판매</button>
+              <button id="sellBugBtn">곤충 판매</button>
+            </div>
+          </section>
+
+          <section class="action-category category-life" aria-labelledby="lifeActionsTitle">
+            <div class="category-heading">
+              <h3 id="lifeActionsTitle">생활</h3>
+              <span>마을에서 쉬고 교류해요</span>
+            </div>
+            <div class="toolbox">
+              <button id="fishBtn">낚시</button>
+              <button id="cookBtn">요리</button>
+              <button id="talkBtn">대화</button>
+              <button id="nextDayBtn">잠자기</button>
+            </div>
+          </section>
+
+          <section class="action-category category-system" aria-labelledby="systemActionsTitle">
+            <div class="category-heading">
+              <h3 id="systemActionsTitle">기록 · 안내</h3>
+              <span>저장하거나 조작법을 확인해요</span>
+            </div>
+            <div class="toolbox">
+              <button id="saveBtn">저장</button>
+              <button id="loadBtn">불러오기</button>
+              <button id="tutorialBtn">튜토리얼</button>
+            </div>
+          </section>
+        </div>
 
         <section class="inventory">
           <p class="eyebrow">가방</p>
