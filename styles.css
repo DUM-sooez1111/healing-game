@@ -857,6 +857,47 @@ h1 {
   line-height: 1.55;
 }
 
+.action-menu {
+  display: grid;
+  gap: 10px;
+}
+
+.action-category {
+  padding: 10px;
+  border: 2px solid #d8bd77;
+  border-left: 6px solid #7fa765;
+  background: rgba(255, 253, 242, 0.62);
+}
+
+.category-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.category-heading h3 {
+  margin: 0;
+  color: #385c3d;
+}
+
+.category-heading span {
+  color: #65725b;
+  font-size: 11px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.category-shop { border-left-color: #c49a45; }
+.category-shop .category-heading h3 { color: #8a6524; }
+.category-trade { border-left-color: #6394b0; }
+.category-trade .category-heading h3 { color: #386b88; }
+.category-life { border-left-color: #b6788c; }
+.category-life .category-heading h3 { color: #875064; }
+.category-system { border-left-color: #8a9188; }
+.category-system .category-heading h3 { color: #555d57; }
+
 .toolbox {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -872,6 +913,12 @@ h1 {
   font-weight: 900;
   box-shadow: 0 3px 0 #b99655;
 }
+
+.category-farm .toolbox button { border-color: #668c58; }
+.category-shop .toolbox button { border-color: #b6893c; }
+.category-trade .toolbox button { border-color: #6690a8; }
+.category-life .toolbox button { border-color: #a66f81; }
+.category-system .toolbox button { border-color: #7a827a; }
 
 .toolbox button:active {
   transform: translateY(2px);
