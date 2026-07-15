@@ -54,7 +54,7 @@ const insectNames = {
 const tutorialSteps = [
   ["마을을 둘러보세요", "WASD 또는 방향키로 이동하세요. 건물이나 주민을 누르면 그곳으로 바로 이동할 수도 있습니다."],
   ["작물을 키워보세요", "밭을 누른 뒤 밭 갈기, 씨앗 심기, 물주기를 차례로 사용하세요. 잠자고 나면 물을 준 작물이 자랍니다."],
-  ["곤충을 채집하세요", "맵 위를 움직이는 나비, 딱정벌레, 반딧불이를 누르면 곤충 도감에 등록됩니다. 잡은 곤충은 상점에서 판매할 수 있어요."],
+  ["랜덤 몹을 채집하세요", "맵 위의 곤충 몹은 잡을 때마다 종류와 레벨이 바뀝니다. 몹을 잡으면 채집 레벨도 무작위로 올라가요."],
   ["상점을 이용하세요", "씨앗 상점에서 씨앗을 사고, 도구 상점에서 전체 파종·물주기·수확 기능을 구매해 보세요."],
 ];
 
@@ -71,6 +71,7 @@ const state = {
   crops: 0,
   fish: 0,
   bugs: 0,
+  level: 1,
   insects: {
     butterfly: 0,
     beetle: 0,
@@ -112,6 +113,32 @@ const movementCodes = {
 
 function clamp(value, min, max) {
   return Math.max(min, Math.min(max, value));
+}
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function randomInsectType(previousType) {
+  const types = Object.keys(insectNames).filter((type) => type !== previousType);
+  return types[randomInt(0, types.length - 1)];
+}
+
+function randomizeInsect(button) {
+  const previousType = button.dataset.insect;
+  const type = randomInsectType(previousType);
+  const mobLevel = randomInt(1, Math.min(20, state.level + 2));
+  button.classList.remove(...Object.keys(insectNames));
+  button.classList.add(type);
+  button.dataset.insect = type;
+  button.dataset.level = mobLevel;
+  button.setAttribute("aria-label", `Lv.${mobLevel} ${insectNames[type]} 몹 잡기`);
+  button.title = `Lv.${mobLevel} ${insectNames[type]} 몹`;
+}
+
+function respawnInsect(button) {
+  randomizeInsect(button);
+  button.classList.remove("caught");
 }
 
 function setMessage(name, text) {
@@ -183,6 +210,7 @@ function renderStats() {
   inventoryList.innerHTML = `
     <span>물고기 ${state.fish}</span>
     <span>곤충 ${state.bugs}</span>
+    <span>채집 레벨 Lv.${state.level}</span>
     <span>채집 ${state.forage}</span>
     <span>요리 ${state.meals}</span>
     <span>물뿌리개 Lv.${state.tools.wateringCan}</span>
@@ -384,6 +412,7 @@ function applySave(rawSave, title, message) {
     const savedState = JSON.parse(rawSave);
     Object.assign(state, savedState, { velocity: { x: 0, y: 0 } });
     state.bugs = state.bugs || 0;
+    state.level = Math.max(1, Number(state.level) || 1);
     state.insects = {
       butterfly: 0,
       beetle: 0,
@@ -430,7 +459,7 @@ function nextDay() {
     plot.watered = false;
   });
   document.querySelectorAll(".collectable").forEach((item) => item.classList.remove("picked"));
-  document.querySelectorAll(".insect").forEach((item) => item.classList.remove("caught"));
+  document.querySelectorAll(".insect").forEach((item) => respawnInsect(item));
   setMessage("새 아침", "작물들이 밤새 자랐습니다. 채집 재료도 다시 돋아났어요.");
   renderFarm();
   renderStats();
@@ -699,12 +728,17 @@ document.querySelectorAll("[data-forage]").forEach((button) => {
 
 document.querySelectorAll("[data-insect]").forEach((button) => {
   button.addEventListener("click", () => {
-    if (button.classList.contains("caught")) return setMessage("곤충", "오늘은 이미 잡은 곤충입니다.");
+    if (button.classList.contains("caught")) return setMessage("곤충 몹", "새 몹이 나타나는 중입니다.");
+    const insectType = button.dataset.insect;
+    const mobLevel = Number(button.dataset.level) || 1;
+    const levelGain = randomInt(1, Math.min(3, Math.max(1, mobLevel)));
     button.classList.add("caught");
     state.bugs += 1;
-    state.insects[button.dataset.insect] += 1;
-    setMessage("곤충 채집", `${insectNames[button.dataset.insect]}를 조심스럽게 잡아 도감에 등록했습니다.`);
+    state.insects[insectType] += 1;
+    state.level += levelGain;
+    setMessage("몹 채집", `Lv.${mobLevel} ${insectNames[insectType]} 몹을 잡았습니다! 채집 레벨 Lv.${state.level} (+${levelGain})`);
     renderStats();
+    window.setTimeout(() => respawnInsect(button), 700);
   });
 });
 
@@ -753,5 +787,6 @@ renderFarm();
 renderStats();
 renderPlayer();
 loadSavedGameOnStart();
+document.querySelectorAll(".insect").forEach((item) => randomizeInsect(item));
 if (!state.tutorialCompleted) openTutorial();
 walk();
